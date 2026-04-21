@@ -1,12 +1,17 @@
 {
   "name": "remember-me---backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "API backend do Remember Me",
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "dev": "nodemon index.js",
+    "start": "nodemon index.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma generate",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+
   "keywords": [],
   "author": "",
   "license": "ISC",
