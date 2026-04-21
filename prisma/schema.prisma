@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id        String  @id @default(uuid())
+  nome      String
+  email     String @unique
+  senha     String 
+  perfil    String // "admin" ou "profissional"
+
+  profissionalId String? @unique
+  profissional Profissional? @relation(fields: [profissionalId], references: [id])
+}
+
+model Profissional {
+  id        String  @id @default(uuid())
+  nome      String
+  ativo Boolean @default(true)
+
+  agendamentos Agendamento[]
+  usuario Usuario?
+}
+
+model Sala {
+
+  id        String @id @default(uuid())
+  nome      String
+
+  agendamentos Agendamento[]
+}
+
+model Servico {
+  id          String @id @default(uuid())
+  nome        String
+  duracaoMin  Int
+  preco       Float
+
+  agendamentos Agendamento[]
+}
+
+
+model Cliente {
+  id          String  @id @default(uuid())
+  nome        String 
+  email       String @unique
+  telefone    String 
+  nascimento  DateTime
+  status      String
+
+  agendamentos Agendamento[]  
+}
+
+model Agendamento {
+  id                 String @id @default(uuid())
+  clienteId          String
+  profissionalId     String
+  salaId             String
+  servicoId          String
+
+  inicio DateTime
+  fim DateTime
+  status String
+
+  cliente       Cliente      @relation(fields: [clienteId], references: [id])
+  profissional  Profissional @relation(fields: [profissionalId], references: [id])
+  sala          Sala         @relation(fields:         [salaId], references: [id])
+  servico       Servico      @relation(fields:      [servicoId], references: [id])
+}
