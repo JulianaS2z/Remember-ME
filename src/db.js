@@ -1,10 +1,14 @@
 import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
 
-export const prisma = new PrismaClient();
+export default prisma;
 
-async function getUser() {
-    const user = await prisma.user.findMany();
-    console.log(user);
-}
+// export const prisma = new PrismaClient();
 
-getUser ()
+// async function getUser() {
+//     const user = await prisma.user.findMany();
+//     console.log(user);
+// }
+
+// getUser ()
+
