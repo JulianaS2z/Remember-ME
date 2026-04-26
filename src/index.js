@@ -7,7 +7,7 @@ import clienteRoutes from './routes/clienteRoutes.js'
 
 const app = express();
 
- app.use(express.json());
+app.use(express.json());
 
    app.get('/', function (req, res) { 
     res.json('API rodando');
@@ -24,7 +24,6 @@ app.use('/clientes', clienteRoutes);
    
 //      res.json('Rota user');
 //  });
-
  app.listen(3000, () => {
      console.log('Servidor rodando em http://localhost:3000');
  });
