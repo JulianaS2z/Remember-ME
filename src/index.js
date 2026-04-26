@@ -1,12 +1,11 @@
 import express from 'express';
 
 import clienteRoutes from './routes/clienteRoutes.js'
-import profissionalRoutes from './routes/profissionalRoutes.js'
-import servicoRoutes from './routes/servicoRoutes.js'
-import agendamentoRoutes from './routes/profissionalRoutes.js'
+// import profissionalRoutes from './routes/profissionalRoutes.js'
+// import servicoRoutes from './routes/servicoRoutes.js'
+// import agendamentoRoutes from './routes/agendamentoRoutes.js'
 
-
- const app = express();
+const app = express();
 
  app.use(express.json());
 
@@ -14,11 +13,11 @@ import agendamentoRoutes from './routes/profissionalRoutes.js'
     res.json('API rodando');
 //      console.log('usuário acessou a rota inicial');
  });
-
- app.use(clienteRoutes);
- app.use(profissionalRoutes);
- app.use(servicoRoutes);
- app.use(agendamentoRoutes);
+ 
+app.use('/clientes', clienteRoutes);
+// app.use('/profissionais', profissionalRoutes);
+// app.use('/servicos', servicoRoutes);
+// app.use('/agendamentos', agendamentoRoutes);
  
 
 //  app.get('/user', async function (req, res) { 
