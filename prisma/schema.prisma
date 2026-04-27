@@ -21,6 +21,8 @@ model Usuario {
 model Profissional {
   id        String  @id @default(uuid())
   nome      String
+  email       String @unique
+  telefone    String 
   ativo Boolean @default(true)
 
   agendamentos Agendamento[]
