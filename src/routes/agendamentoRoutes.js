@@ -1,9 +1,12 @@
 import express from 'express';
-import {criarAgendamento, listarAgendamentos} from '../controllers/agenamentoController.js';
+import {criarAgendamento, 
+listarAgendamentos,
+cancelarAgendamento } from '../controllers/agenamentoController.js';
 
 const router = express.Router();
 
-router.post('/agendamentos', criarAgendamento);
-router.get('/agendamentos', listarAgendamentos);
+router.post('/', criarAgendamento);
+router.get('/', listarAgendamentos);
+router.patch('/:id/cancelar',cancelarAgendamento);
 
 export default router;
