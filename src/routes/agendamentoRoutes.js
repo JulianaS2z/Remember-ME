@@ -1,7 +1,7 @@
 import express from 'express';
 import {criarAgendamento, 
 listarAgendamentos,
-cancelarAgendamento } from '../controllers/agenamentoController.js';
+cancelarAgendamento } from '../controllers/agendamentoController.js';
 
 const router = express.Router();
 

@@ -1,5 +1,5 @@
 import express from 'express';
-import {criarServico,
+import { criarServico,
 listarServicos, 
 deletarServico} from '../controllers/servicoControler.js';
 
