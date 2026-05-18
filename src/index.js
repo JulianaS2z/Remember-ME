@@ -1,10 +1,13 @@
+import 'dotenv/config';
 import express from 'express';
+
 
 import clienteRoutes from './routes/clienteRoutes.js'
 import profissionalRoutes from './routes/profissionalRoutes.js'
 import servicoRoutes from './routes/servicoRoutes.js'
 import agendamentoRoutes from './routes/agendamentoRoutes.js'
 import salaRoutes from './routes/salaRoutes.js'
+import authRoutes from './routes/authRoutes.js'
 
 const app = express();
 
@@ -20,6 +23,7 @@ app.use('/profissionais', profissionalRoutes);
 app.use('/servicos', servicoRoutes);
 app.use('/agendamentos', agendamentoRoutes);
 app.use('/salas', salaRoutes);
+app.use('/auth', authRoutes);
  
 
 //  app.get('/user', async function (req, res) { 

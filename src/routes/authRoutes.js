@@ -1,4 +1,8 @@
-import express from 'express';
-import { criarServico,
-listarServicos, 
-deletarServico} from '../controllers/servicoControler.js';
+import { Router } from "express";
+import { login } from "../controllers/authController.js";
+
+const router = Router();
+
+router.post("/login", login);
+
+export default router;
