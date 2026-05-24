@@ -1,19 +1,8 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { criarServicoService, listarServicosService, deletarServicoService } from '../services/servico.service.js';
 
 export const criarServico = async (req, res) => {
   try {
-    const { nome, duracaoMin, preco } = req.body;
-
-    const novoServico = await prisma.servico.create({
-        data: {
-            nome,
-            duracaoMin,
-            preco
-        }
-    });
-
+    const novoServico = await criarServicoService(req.body);
     res.status(201).json(novoServico);
   } catch (error) {
     console.error('Erro ao criar serviço:', error);
@@ -23,22 +12,18 @@ export const criarServico = async (req, res) => {
 
 export const listarServicos = async (req, res) => {
   try {
-    const servicos = await prisma.servico.findMany();
-
+    const servicos = await listarServicosService();
     res.json(servicos);
-
-    } catch (error) {
-        console.error('Erro ao listar serviços:', error);
-        res.status(500).json({ error: 'Erro ao listar serviços' });
-    }
+  } catch (error) {
+    console.error('Erro ao listar serviços:', error);
+    res.status(500).json({ error: 'Erro ao listar serviços' });
+  }
 };
 
 export const deletarServico = async (req, res) => {
   try {
     const { id } = req.params;
-    await prisma.servico.delete({
-      where: { id }
-    });
+    await deletarServicoService(id);
     res.json({ message: 'Serviço deletado com sucesso' });
   } catch (error) {
     console.error('Erro ao deletar serviço:', error);

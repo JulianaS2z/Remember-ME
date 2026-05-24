@@ -1,22 +1,9 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
-
+import { criarProfissionalService, listarProfissionaisService, atualizarProfissionalService, setAtivoProfissionalService } from '../services/profissional.service.js';
 
 export const criarProfissional = async (req, res) => {
   try {
-    const { nome, email, telefone } = req.body;
-
-    const profissional = await prisma.profissional.create({
-      data: {
-        nome,
-        email,
-        telefone
-      }
-    });
-
+    const profissional = await criarProfissionalService(req.body);
     res.status(201).json(profissional);
-
   } catch (error) {
     console.error(error);
 
@@ -30,12 +17,8 @@ export const criarProfissional = async (req, res) => {
 
 export const listarProfissionais = async (req, res) => {
   try {
-    const profissionais = await prisma.profissional.findMany({
-      where: { ativo: true }
-    });
-
+    const profissionais = await listarProfissionaisService();
     res.json(profissionais);
-
   } catch (error) {
     console.error(error);
     res.status(400).json({ erro: 'Erro ao listar profissionais' });
@@ -46,19 +29,8 @@ export const listarProfissionais = async (req, res) => {
 export const atualizarProfissional = async (req, res) => {
   try {
     const { id } = req.params;
-    const { nome, email, telefone } = req.body;
-
-    const profissional = await prisma.profissional.update({
-      where: { id },
-      data: {
-        nome,
-        email,
-        telefone
-      }
-    });
-
+    const profissional = await atualizarProfissionalService(id, req.body);
     res.json(profissional);
-
   } catch (error) {
     console.error(error);
     res.status(400).json({ erro: 'Erro ao atualizar profissional' });
@@ -69,17 +41,8 @@ export const atualizarProfissional = async (req, res) => {
 export const desativarProfissional = async (req, res) => {
   try {
     const { id } = req.params;
-
-    const profissional = await prisma.profissional.update({
-      where: { id },
-      data: { ativo: false }
-    });
-
-    res.json({
-      mensagem: 'Profissional desativado com sucesso',
-      profissional
-    });
-
+    const profissional = await setAtivoProfissionalService(id, false);
+    res.json({ mensagem: 'Profissional desativado com sucesso', profissional });
   } catch (error) {
     console.error(error);
     res.status(400).json({ erro: 'Erro ao desativar profissional' });
@@ -89,16 +52,8 @@ export const desativarProfissional = async (req, res) => {
 export const ativarProfissional = async (req, res) => {
   try {
     const { id } = req.params;
-
-    const profissional = await prisma.profissional.update({
-      where: { id },
-      data: { ativo: true }
-    });
-
-    res.json({
-      mensagem: 'Profissional ativado com sucesso',
-      profissional
-    });
+    const profissional = await setAtivoProfissionalService(id, true);
+    res.json({ mensagem: 'Profissional ativado com sucesso', profissional });
 
   } catch (error) {
     console.error(error);
