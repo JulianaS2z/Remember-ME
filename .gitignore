@@ -7,6 +7,9 @@ node_modules/
 .env
 .env.local
 .env.*.local
+/generated/prisma
+prisma/dev.db
+prisma/dev.db-jounal
 
 # Build e distribuição
 /dist
@@ -46,6 +49,7 @@ pids
 
 # Sistema operacional
 .DS_Store
+thumbs.db
 Thumbs.db
 
 # Temporários
