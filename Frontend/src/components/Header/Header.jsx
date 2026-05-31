@@ -15,21 +15,21 @@ export default function Header({ title }) {
         <p className="text-surface-subtle text-xs mt-0.5 capitalize">{today}</p>
       </div>
 
-      {/* Right actions */}
+      {/* Right actions
       <div className="flex items-center gap-2">
         <button className="p-2.5 text-surface-subtle hover:text-slate-200 hover:bg-surface-hover rounded-xl transition-colors">
           <RiSearchLine size={18} />
-        </button>
+        </button> */}
 
-        <button className="relative p-2.5 text-surface-subtle hover:text-slate-200 hover:bg-surface-hover rounded-xl transition-colors">
+        {/* <button className="relative p-2.5 text-surface-subtle hover:text-slate-200 hover:bg-surface-hover rounded-xl transition-colors">
           <RiBellLine size={18} />
           <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-brand-500 rounded-full ring-2 ring-surface-card" />
-        </button>
+        </button> */}
 
         <div className="w-8 h-8 rounded-xl bg-brand-500/20 flex items-center justify-center text-brand-400 font-bold text-sm ml-1">
           {user?.nome?.charAt(0)?.toUpperCase() || 'U'}
         </div>
-      </div>
+      {/* </div> */}
     </header>
   )
 }

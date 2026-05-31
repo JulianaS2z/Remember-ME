@@ -7,6 +7,7 @@ import {
   updateProfile,
   changePassword,
   forgotPasswordController,
+  register,
 } from '../controllers/auth.controller.js'
 import { requestAccessController } from '../controllers/accessRequest.controller.js'
 
@@ -18,11 +19,13 @@ import {
   changePasswordSchema,
   forgotPasswordSchema,
   requestAccessSchema,
+  registerSchema,
 } from '../validators/auth.validator.js'
 
 const router = Router()
 
 router.post('/login', validate(loginSchema), login)
+router.post('/register', validate(registerSchema), register)
 router.post('/logout', authMiddleware, logout)
 
 router.get('/profile', authMiddleware, profile)

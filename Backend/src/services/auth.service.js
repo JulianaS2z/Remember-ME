@@ -1,4 +1,4 @@
-import { findUserByEmail, findUserById, updateUser, updateUserPassword } from '../repositories/auth.repository.js'
+import { findUserByEmail, findUserById, updateUser, updateUserPassword, createUser } from '../repositories/auth.repository.js'
 import { comparePassword, hashPassword } from '../utils/password.js'
 import { signToken } from '../utils/jwt.js'
 import { AppError } from '../utils/AppError.js'
@@ -78,3 +78,25 @@ export async function changeUserPassword(id, senhaAtual, novaSenha) {
   return updateUserPassword(id, hashed)
 }
 
+export async function registerUser(email, nome, senha) {
+  const usuarioExistente = await findUserByEmail(email)
+  if (usuarioExistente) {
+    throw new AppError('Email já cadastrado', 400)
+  }
+
+  const hashedSenha = await hashPassword(senha)
+
+  const usuario = await createUser({
+    nome,
+    email,
+    senha: hashedSenha,
+    perfil: 'cliente',
+  })
+
+  const token = signToken({ sub: usuario.id, perfil: usuario.perfil })
+
+  return {
+    token,
+    usuario: sanitizeUser(usuario),
+  }
+}

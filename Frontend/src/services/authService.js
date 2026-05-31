@@ -41,6 +41,15 @@ const authService = {
     return data
   },
 
+  async register(email, senha, nome) {
+    const { data } = await api.post('/auth/register', { email, senha, nome })
+    if (data.token) {
+      localStorage.setItem('rm_token', data.token)
+      localStorage.setItem('rm_user', JSON.stringify(data.user || data.usuario))
+    }
+    return data
+  },
+
   getStoredUser() {
     try { return JSON.parse(localStorage.getItem('rm_user')) } catch { return null }
   },

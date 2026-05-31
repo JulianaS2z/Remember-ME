@@ -4,6 +4,7 @@ import {
   updateUserProfile,
   changeUserPassword,
   forgotPassword,
+  registerUser,
 } from '../services/auth.service.js'
 
 
@@ -78,6 +79,21 @@ export async function forgotPasswordController(req, res, next) {
     const result = await forgotPassword(email)
 
     return res.json(result)
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export async function register(req, res, next) {
+  try {
+    const { email, senha, nome } = req.body
+    const result = await registerUser(email, nome, senha)
+
+    return res.status(201).json({
+      mensagem: 'Usuário registrado com sucesso',
+      token: result.token,
+      user: result.usuario,
+    })
   } catch (error) {
     return next(error)
   }

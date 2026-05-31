@@ -15,3 +15,14 @@ export function updateUser(id, payload) {
 export function updateUserPassword(id, hashedPassword) {
   return prisma.usuario.update({ where: { id }, data: { senha: hashedPassword } })
 }
+
+export function createUser(data) {
+  return prisma.usuario.create({
+    data: {
+      nome: data.nome,
+      email: data.email,
+      senha: data.senha,
+      perfil: data.perfil || 'cliente',
+    },
+  })
+}

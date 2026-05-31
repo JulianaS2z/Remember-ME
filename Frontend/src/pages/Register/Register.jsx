@@ -1,26 +1,29 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { RiMailLine, RiLockLine, RiEyeLine, RiEyeOffLine, RiCameraLensLine } from 'react-icons/ri'
-import { useAuth } from '../../hooks/useAuth.js'
+import { RiMailLine, RiLockLine, RiUserLine, RiEyeLine, RiEyeOffLine, RiCameraLensLine } from 'react-icons/ri'
+import authService from '../../services/authService.js'
 
-export default function Login() {
-  const { login, loading } = useAuth()
+export default function Register() {
   const navigate = useNavigate()
 
-  const [form, setForm] = useState({ email: '', password: '' })
+  const [form, setForm] = useState({ nome: '', email: '', password: '' })
   const [showPass, setShowPass] = useState(false)
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (e) => setForm(f => ({ ...f, [e.target.name]: e.target.value }))
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
+    setLoading(true)
     try {
-      await login(form.email, form.password)
+      await authService.register(form.email, form.password, form.nome)
       navigate('/')
     } catch (err) {
-      setError(err.response?.data?.erro || err.response?.data?.message || 'E-mail ou senha incorretos.')
+      setError(err.response?.data?.erro || err.response?.data?.message || 'Erro ao registrar usuário.')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -45,11 +48,11 @@ export default function Login() {
         <div className="relative">
           <p className="text-brand-400 text-sm font-semibold tracking-widest uppercase mb-6">Studio Premium</p>
           <h1 className="font-display font-bold text-5xl text-slate-100 leading-tight mb-6">
-            Transformando<br />momentos em<br />
-            <span className="text-brand-400">memórias eternas.</span>
+            Criar sua conta<br />e começar a usar<br />
+            <span className="text-brand-400">o Remember Me.</span>
           </h1>
           <p className="text-surface-subtle text-lg leading-relaxed max-w-md">
-            Sistema completo de gestão para estúdios fotográficos — clientes, agendamentos, profissionais e muito mais.
+            Gerencie seus agendamentos e clientes com o melhor sistema para estúdios fotográficos.
           </p>
         </div>
 
@@ -75,8 +78,8 @@ export default function Login() {
           </div>
 
           <div className="mb-8">
-            <h2 className="font-display font-bold text-3xl text-slate-100 mb-2">Bem-vindo de volta</h2>
-            <p className="text-surface-subtle">Entre com suas credenciais para acessar o studio.</p>
+            <h2 className="font-display font-bold text-3xl text-slate-100 mb-2">Criar Conta</h2>
+            <p className="text-surface-subtle">Preencha os dados para se registrar na plataforma.</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -85,6 +88,22 @@ export default function Login() {
                 {error}
               </div>
             )}
+
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">Nome Completo</label>
+              <div className="relative">
+                <RiUserLine size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-surface-subtle" />
+                <input
+                  type="text"
+                  name="nome"
+                  value={form.nome}
+                  onChange={handleChange}
+                  placeholder="Seu nome completo"
+                  required
+                  className="rm-input pl-10"
+                />
+              </div>
+            </div>
 
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">E-mail</label>
@@ -125,16 +144,6 @@ export default function Login() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" className="w-4 h-4 rounded bg-surface border-surface-border accent-brand-500" />
-                <span className="text-sm text-surface-subtle">Lembrar-me</span>
-              </label>
-              <Link to="/forgot-password" className="text-sm text-brand-400 hover:text-brand-300 transition-colors">
-                Esqueci minha senha
-              </Link>
-            </div>
-
             <button
               type="submit"
               disabled={loading}
@@ -143,20 +152,16 @@ export default function Login() {
               {loading ? (
                 <>
                   <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  Entrando...
+                  Registrando...
                 </>
-              ) : 'Entrar'}
+              ) : 'Registrar'}
             </button>
           </form>
 
           <p className="mt-8 text-center text-sm text-surface-subtle">
-            Não tem acesso?{' '}
-            <Link to="/request-access" className="text-brand-400 font-medium hover:text-brand-300 transition-colors">
-              Solicite ao administrador
-            </Link>
-            {' '}ou{' '}
-            <Link to="/register" className="text-brand-400 font-medium hover:text-brand-300 transition-colors">
-              crie sua conta
+            Já tem conta?{' '}
+            <Link to="/login" className="text-brand-400 font-medium hover:text-brand-300 transition-colors">
+              Fazer login
             </Link>
           </p>
         </div>
