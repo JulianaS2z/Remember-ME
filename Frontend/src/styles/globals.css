@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #0F172A;
+    color: #E2E8F0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #1E293B;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+  }
+}
+
+@layer components {
+  .rm-card {
+    @apply bg-surface-card border border-surface-border rounded-2xl;
+  }
+
+  .rm-input {
+    @apply w-full px-4 py-3 bg-surface border border-surface-border rounded-xl text-slate-200 placeholder-surface-subtle
+    focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all duration-200;
+  }
+
+  .rm-btn-primary {
+    @apply flex items-center gap-2 px-5 py-2.5 bg-brand-500 hover:bg-brand-600 text-white font-medium rounded-xl
+    transition-all duration-200 hover:shadow-lg hover:shadow-brand-500/20 active:scale-[0.98];
+  }
+
+  .rm-btn-secondary {
+    @apply flex items-center gap-2 px-5 py-2.5 bg-surface-hover hover:bg-surface-border text-slate-300 font-medium rounded-xl
+    transition-all duration-200 border border-surface-border;
+  }
+
+  .rm-btn-ghost {
+    @apply flex items-center gap-2 px-4 py-2 text-surface-subtle hover:text-slate-200 hover:bg-surface-hover rounded-xl
+    transition-all duration-200;
+  }
+
+  .rm-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
+  }
+
+  .status-confirmado {
+    @apply bg-emerald-500/15 text-emerald-400 border border-emerald-500/20;
+  }
+
+  .status-pendente {
+    @apply bg-amber-500/15 text-amber-400 border border-amber-500/20;
+  }
+
+  .status-cancelado {
+    @apply bg-red-500/15 text-red-400 border border-red-500/20;
+  }
+
+  .status-finalizado {
+    @apply bg-purple-500/15 text-purple-400 border border-purple-500/20;
+  }
+
+  .status-ativo {
+    @apply bg-emerald-500/15 text-emerald-400 border border-emerald-500/20;
+  }
+
+  .status-inativo {
+    @apply bg-slate-500/15 text-slate-400 border border-slate-500/20;
+  }
+}
+
+/* Calendar specific */
+.cal-event {
+  @apply rounded-lg px-2 py-1 text-xs font-medium cursor-pointer truncate transition-opacity hover:opacity-80;
+}

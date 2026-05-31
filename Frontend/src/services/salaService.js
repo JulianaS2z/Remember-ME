@@ -1,15 +1,26 @@
-import api from './api';
+import api from './api.js'
 
-export const salaService = {
-  getAll: () => api.get('/salas'),
-  
-  getById: (id) => api.get(`/salas/${id}`),
-  
-  create: (dados) => api.post('/salas', dados),
-  
-  update: (id, dados) => api.put(`/salas/${id}`, dados),
-  
-  delete: (id) => api.delete(`/salas/${id}`),
-};
+const salaService = {
+  async listar(params = {}) {
+    const { data } = await api.get('/salas', { params })
+    return data
+  },
+  async buscar(id) {
+    const { data } = await api.get(`/salas/${id}`)
+    return data
+  },
+  async criar(payload) {
+    const { data } = await api.post('/salas', payload)
+    return data
+  },
+  async atualizar(id, payload) {
+    const { data } = await api.put(`/salas/${id}`, payload)
+    return data
+  },
+  async excluir(id) {
+    const { data } = await api.delete(`/salas/${id}`)
+    return data
+  },
+}
 
-export default salaService;
+export default salaService

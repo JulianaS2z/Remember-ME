@@ -1,16 +1,79 @@
-# React + Vite
+# Remember Me Studio — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sistema de gestão para estúdios fotográficos.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React 18** + **Vite**
+- **React Router DOM v6**
+- **Axios** com interceptors JWT
+- **Tailwind CSS** — dark theme customizado
+- **Recharts** — gráficos
+- **date-fns** — datas em PT-BR
+- **React Icons** — ícones
 
-## React Compiler
+## Estrutura
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```
+src/
+├── components/        # Componentes reutilizáveis
+│   ├── Sidebar/       # Navegação lateral fixa
+│   ├── Header/        # Cabeçalho com título e ações
+│   ├── Modal/         # Modal genérico com ESC e backdrop
+│   ├── Loading/       # Spinner e tela de carregamento
+│   ├── ProtectedRoute/
+│   ├── ClienteForm/
+│   ├── ProfissionalForm/
+│   ├── ServicoForm/
+│   ├── SalaForm/
+│   └── AgendamentoForm/
+├── pages/             # Telas da aplicação
+├── services/          # Integração com API REST
+├── context/           # AuthContext com JWT
+├── hooks/             # useAuth
+├── layouts/           # MainLayout / AuthLayout
+├── routes/            # AppRoutes
+└── styles/            # globals.css com Tailwind
+```
 
-## Expanding the ESLint configuration
+## Setup
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+cp .env .env.local   # edite VITE_API_URL
+npm run dev
+```
+
+## Variáveis de ambiente
+
+| Variável        | Padrão                        | Descrição           |
+|-----------------|-------------------------------|---------------------|
+| `VITE_API_URL`  | `http://localhost:3000/api`   | URL base do backend |
+
+## API esperada pelo frontend
+
+### Auth
+- `POST /auth/login` → `{ token, user }`
+- `POST /auth/logout`
+- `GET  /auth/profile`
+- `PUT  /auth/profile`
+- `PUT  /auth/change-password`
+
+### Recursos (CRUD padrão)
+- `/clientes` — GET, POST, GET/:id, PUT/:id, DELETE/:id, PATCH/:id/status
+- `/profissionais` — GET, POST, GET/:id, PUT/:id, DELETE/:id, PATCH/:id/status
+- `/servicos` — GET, POST, GET/:id, PUT/:id, DELETE/:id
+- `/salas` — GET, POST, GET/:id, PUT/:id, DELETE/:id
+- `/agendamentos` — GET, POST, GET/:id, PUT/:id, DELETE/:id, PATCH/:id/status
+
+### Dashboard
+- `GET /dashboard/stats` → `{ clientes, agendamentos, ensaios, receita, porMes[], porServico[] }`
+
+## Status de agendamento
+
+| Status     | Cor       |
+|------------|-----------|
+| Confirmado | Azul      |
+| Pendente   | Âmbar     |
+| Cancelado  | Vermelho  |
+| Finalizado | Roxo      |

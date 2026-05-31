@@ -1,23 +1,43 @@
-import api from './api';
+import api from './api.js'
 
-export const authService = {
-  login: (email, senha) => api.post('/auth/login', { email, senha }),
-  
-  register: (dados) => api.post('/auth/register', dados),
-  
-  logout: () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+const authService = {
+  async login(email, password) {
+    const { data } = await api.post('/auth/login', { email, senha: password })
+    if (data.token) {
+      localStorage.setItem('rm_token', data.token)
+      localStorage.setItem('rm_user', JSON.stringify(data.user || data.usuario))
+    }
+    return data
   },
-  
-  getCurrentUser: () => {
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
-  },
-  
-  setToken: (token) => localStorage.setItem('token', token),
-  
-  getToken: () => localStorage.getItem('token'),
-};
 
-export default authService;
+  async logout() {
+    try { await api.post('/auth/logout') } catch (_) {}
+    localStorage.removeItem('rm_token')
+    localStorage.removeItem('rm_user')
+  },
+
+  async getProfile() {
+    const { data } = await api.get('/auth/profile')
+    return data.user || data.usuario || data
+  },
+
+  async updateProfile(payload) {
+    const { data } = await api.put('/auth/profile', payload)
+    return data.user || data
+  },
+
+  async changePassword(payload) {
+    const { data } = await api.put('/auth/change-password', payload)
+    return data
+  },
+
+  getStoredUser() {
+    try { return JSON.parse(localStorage.getItem('rm_user')) } catch { return null }
+  },
+
+  isAuthenticated() {
+    return !!localStorage.getItem('rm_token')
+  },
+}
+
+export default authService

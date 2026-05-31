@@ -1,19 +1,34 @@
-import api from './api';
+import api from './api.js'
 
-export const agendamentoService = {
-  getAll: () => api.get('/agendamentos'),
-  
-  getById: (id) => api.get(`/agendamentos/${id}`),
-  
-  create: (dados) => api.post('/agendamentos', dados),
-  
-  update: (id, dados) => api.put(`/agendamentos/${id}`, dados),
-  
-  delete: (id) => api.delete(`/agendamentos/${id}`),
-  
-  getByCliente: (clienteId) => api.get(`/agendamentos/cliente/${clienteId}`),
-  
-  getByProfissional: (profissionalId) => api.get(`/agendamentos/profissional/${profissionalId}`),
-};
+const agendamentoService = {
+  async listar(params = {}) {
+    const { data } = await api.get('/agendamentos', { params })
+    return data
+  },
+  async buscar(id) {
+    const { data } = await api.get(`/agendamentos/${id}`)
+    return data
+  },
+  async criar(payload) {
+    const { data } = await api.post('/agendamentos', payload)
+    return data
+  },
+  async atualizar(id, payload) {
+    const { data } = await api.put(`/agendamentos/${id}`, payload)
+    return data
+  },
+  async excluir(id) {
+    const { data } = await api.delete(`/agendamentos/${id}`)
+    return data
+  },
+  async alterarStatus(id, status) {
+    const { data } = await api.patch(`/agendamentos/${id}/status`, { status })
+    return data
+  },
+  async listarPorPeriodo(inicio, fim) {
+    const { data } = await api.get('/agendamentos', { params: { inicio, fim } })
+    return data
+  },
+}
 
-export default agendamentoService;
+export default agendamentoService
