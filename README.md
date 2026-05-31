@@ -425,12 +425,13 @@ O Remember Me foi desenvolvido com base na ideia de um sistema genérico de agen
 
 A proposta original previa cadastros de clientes, profissionais, serviços, agendamentos e usuários. O Remember Me mantém essa base e adiciona o controle de salas, uma necessidade real para estúdios que precisam reservar ambientes físicos para ensaios e sessões.
 
-Assim, o projeto continua coerente com a proposta acadêmica e apresenta uma personalização mais profissional para portfólio.
-
 ## Status do Projeto
 
 Projeto em fase final de integração e validação, com backend, frontend, autenticação, CRUDs e dashboard estruturados.
 
 ## Autoria
 
-Projeto acadêmico desenvolvido para fins de estudo, apresentação e portfólio profissional.
+Projeto acadêmico desenvolvido para fins de estudo
+Desenvolvido por Juliana Evangelista
+Orientadores: Prof. Roberto Carlos(backend) e Carlos Anderson(backend e frontend).
+Projeto Acadêmico — 2025
