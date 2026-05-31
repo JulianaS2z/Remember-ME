@@ -4,6 +4,8 @@ import AuthLayout from '../layouts/AuthLayout.jsx'
 import ProtectedRoute from '../components/ProtectedRoute/ProtectedRoute.jsx'
 
 import Login from '../pages/Login/Login.jsx'
+import ForgotPassword from '../pages/ForgotPassword/ForgotPassword.jsx'
+import RequestAccess from '../pages/RequestAccess/RequestAccess.jsx'
 import Dashboard from '../pages/Dashboard/Dashboard.jsx'
 import Clientes from '../pages/Clientes/Clientes.jsx'
 import Profissionais from '../pages/Profissionais/Profissionais.jsx'
@@ -19,6 +21,8 @@ export default function AppRoutes() {
       {/* Auth routes */}
       <Route element={<AuthLayout />}>
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/request-access" element={<RequestAccess />} />
       </Route>
 
       {/* Protected routes */}

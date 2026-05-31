@@ -6,5 +6,18 @@ export async function hashPassword(password) {
 }
 
 export async function comparePassword(password, hash) {
-  return bcrypt.compare(password, hash);
+  if (!hash || typeof hash !== 'string') {
+    return false;
+  }
+
+  // Support legacy records where the password may have been stored in plain text.
+  if (!hash.startsWith('$2')) {
+    return password === hash;
+  }
+
+  try {
+    return bcrypt.compare(password, hash);
+  } catch (error) {
+    return false;
+  }
 }

@@ -2,6 +2,8 @@ import { findUserByEmail, findUserById, updateUser, updateUserPassword } from '.
 import { comparePassword, hashPassword } from '../utils/password.js'
 import { signToken } from '../utils/jwt.js'
 import { AppError } from '../utils/AppError.js'
+import prisma from '../config/prisma.js'
+import { env } from '../config/env.js'
 
 function sanitizeUser(usuario) {
   return {
@@ -12,12 +14,36 @@ function sanitizeUser(usuario) {
   }
 }
 
+export async function forgotPassword(email) {
+  const usuario = await findUserByEmail(email)
+  if (!usuario) {
+    throw new AppError('Email não encontrado', 404)
+  }
+
+  const token = signToken({ sub: usuario.id }, '1h')
+  const resetLink = `${env.frontendUrl}/forgot-password?token=${token}`
+
+  console.log('=================== RECUPERAÇÃO DE SENHA ===================')
+  console.log(`Usuário: ${usuario.email}`)
+  console.log(`Link de recuperação: ${resetLink}`)
+  console.log('==========================================================')
+
+  return {
+    mensagem: 'Solicitação de recuperação enviada. Verifique sua caixa de entrada.'
+  }
+}
+
 export async function authenticate(email, senha) {
   const usuario = await findUserByEmail(email)
   if (!usuario) return null
 
   const valid = await comparePassword(senha, usuario.senha)
   if (!valid) return null
+
+  if (usuario.senha && !usuario.senha.startsWith('$2')) {
+    const hashed = await hashPassword(senha)
+    await updateUserPassword(usuario.id, hashed)
+  }
 
   const token = signToken({ sub: usuario.id, perfil: usuario.perfil })
 
@@ -51,3 +77,4 @@ export async function changeUserPassword(id, senhaAtual, novaSenha) {
   const hashed = await hashPassword(novaSenha)
   return updateUserPassword(id, hashed)
 }
+

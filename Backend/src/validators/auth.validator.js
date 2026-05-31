@@ -13,6 +13,31 @@ export const loginSchema = Joi.object({
   }),
 })
 
+export const forgotPasswordSchema = Joi.object({
+  email: Joi.string().email().required().messages({
+    'string.email': 'Email inválido',
+    'string.empty': 'Email obrigatório',
+    'any.required': 'Email obrigatório',
+  }),
+})
+
+export const requestAccessSchema = Joi.object({
+  nome: Joi.string().trim().required().messages({
+    'string.empty': 'Nome é obrigatório',
+    'any.required': 'Nome é obrigatório',
+  }),
+  email: Joi.string().email().required().messages({
+    'string.email': 'Email inválido',
+    'string.empty': 'Email obrigatório',
+    'any.required': 'Email obrigatório',
+  }),
+  telefone: Joi.string().trim().allow('', null),
+  mensagem: Joi.string().trim().required().messages({
+    'string.empty': 'Mensagem é obrigatória',
+    'any.required': 'Mensagem é obrigatória',
+  }),
+})
+
 export const updateProfileSchema = Joi.object({
   nome: Joi.string().trim().required().messages({
     'string.empty': 'Nome é obrigatório',

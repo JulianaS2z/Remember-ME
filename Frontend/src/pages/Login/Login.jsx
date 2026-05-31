@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { RiMailLine, RiLockLine, RiEyeLine, RiEyeOffLine, RiCameraLensLine } from 'react-icons/ri'
 import { useAuth } from '../../hooks/useAuth.js'
 
@@ -130,9 +130,9 @@ export default function Login() {
                 <input type="checkbox" className="w-4 h-4 rounded bg-surface border-surface-border accent-brand-500" />
                 <span className="text-sm text-surface-subtle">Lembrar-me</span>
               </label>
-              <a href="#" className="text-sm text-brand-400 hover:text-brand-300 transition-colors">
+              <Link to="/forgot-password" className="text-sm text-brand-400 hover:text-brand-300 transition-colors">
                 Esqueci minha senha
-              </a>
+              </Link>
             </div>
 
             <button
@@ -151,9 +151,9 @@ export default function Login() {
 
           <p className="mt-8 text-center text-sm text-surface-subtle">
             Não tem acesso?{' '}
-            <a href="#" className="text-brand-400 font-medium hover:text-brand-300 transition-colors">
+            <Link to="/request-access" className="text-brand-400 font-medium hover:text-brand-300 transition-colors">
               Solicite ao administrador
-            </a>
+            </Link>
           </p>
         </div>
       </div>

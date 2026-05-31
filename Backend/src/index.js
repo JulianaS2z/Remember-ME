@@ -16,10 +16,11 @@ validateEnv()
 
 const app = express();
 
-app.use(cors({
-  origin: env.frontendUrl,
-  credentials: true,
-}));
+const corsOptions = env.nodeEnv === 'development'
+  ? { origin: true, credentials: true }
+  : { origin: env.frontendUrl, credentials: true }
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.get('/', function (req, res) {

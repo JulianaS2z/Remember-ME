@@ -12,6 +12,10 @@ function normalizeServicoPayload(data) {
     payload.duracaoMin = Number(payload.duracaoMin);
   }
 
+  if (payload.preco !== undefined) {
+    payload.preco = Number(payload.preco);
+  }
+
   return payload;
 }
 

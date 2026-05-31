@@ -1,4 +1,11 @@
-import { authenticate, getUserById, updateUserProfile, changeUserPassword } from '../services/auth.service.js'
+import {
+  authenticate,
+  getUserById,
+  updateUserProfile,
+  changeUserPassword,
+  forgotPassword,
+} from '../services/auth.service.js'
+
 
 function userResponse(usuario) {
   return {
@@ -12,6 +19,7 @@ function userResponse(usuario) {
 export async function login(req, res, next) {
   try {
     const { email, senha } = req.body
+    console.log('[AUTH] login request received', { email, senhaPresent: !!senha, senhaLen: senha ? String(senha).length : 0, from: req.ip })
     const result = await authenticate(email, senha)
 
     if (!result) {
@@ -58,6 +66,18 @@ export async function changePassword(req, res, next) {
   try {
     await changeUserPassword(req.user.sub, req.body.senhaAtual, req.body.novaSenha)
     return res.json({ mensagem: 'Senha alterada com sucesso' })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export async function forgotPasswordController(req, res, next) {
+  try {
+    const { email } = req.body
+
+    const result = await forgotPassword(email)
+
+    return res.json(result)
   } catch (error) {
     return next(error)
   }

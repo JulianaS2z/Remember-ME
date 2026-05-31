@@ -74,3 +74,13 @@ model Agendamento {
   sala          Sala         @relation(fields:         [salaId], references: [id])
   servico       Servico      @relation(fields:      [servicoId], references: [id])
 }
+
+model SolicitacaoAcesso {
+  id        String   @id @default(uuid())
+  nome      String
+  email     String
+  telefone  String?
+  mensagem  String
+  status    String   @default("PENDENTE")
+  createdAt DateTime @default(now())
+}

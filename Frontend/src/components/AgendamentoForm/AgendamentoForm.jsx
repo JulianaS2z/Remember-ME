@@ -13,7 +13,6 @@ const EMPTY = {
   servicoId: '',
   data: '',
   horaInicio: '',
-  horaFim: '',
   status: 'Pendente',
   observacoes: '',
 }
@@ -75,7 +74,9 @@ export default function AgendamentoForm({ onSubmit, onCancel, initialData = null
     if (!form.horaInicio) return setError('Hora de início é obrigatória.')
 
     try {
-      await onSubmit(form)
+      const { horaFim, ...payload } = form
+
+      await onSubmit(payload)
     } catch (err) {
       setError(apiError(err))
     }

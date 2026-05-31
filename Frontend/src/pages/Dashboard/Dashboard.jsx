@@ -74,10 +74,10 @@ export default function Dashboard() {
     <div className="space-y-6">
       {/* Stat cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <StatCard icon={RiUserLine} label="Total de Clientes" value={stats?.clientes ?? '247'} sub="+12% este mês" color="brand" />
-        <StatCard icon={RiCalendarEventLine} label="Agendamentos" value={stats?.agendamentos ?? '34'} sub="+8% este mês" color="purple" />
-        <StatCard icon={RiCameraLine} label="Ensaios Realizados" value={stats?.ensaios ?? '156'} sub="+15% este mês" color="emerald" />
-        <StatCard icon={RiMoneyDollarCircleLine} label="Receita Prevista" value={stats?.receita ?? 'R$ 48.5k'} sub="+23% este mês" color="amber" />
+        <StatCard icon={RiUserLine} label="Total de Clientes" value={stats?.clientes ?? '247'}  />
+        <StatCard icon={RiCalendarEventLine} label="Agendamentos" value={stats?.agendamentos ?? '34'} />
+        <StatCard icon={RiCameraLine} label="Ensaios Realizados" value={stats?.ensaios ?? '156'} />
+        <StatCard icon={RiMoneyDollarCircleLine} label="Receita Prevista" value={stats?.receita ?? 'R$ 48.5k'} />
       </div>
 
       {/* Charts row */}

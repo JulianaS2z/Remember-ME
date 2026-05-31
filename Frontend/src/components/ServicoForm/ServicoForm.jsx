@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 const EMPTY = { nome: '', duracao: '', preco: '' }
 
 function apiError(err) {
-  return err.response?.data?.erro || err.response?.data?.message || 'Erro ao salvar serviço.'
+  return err.response?.data?.erro || err.response?.data?.error || err.response?.data?.message || 'Erro ao salvar serviço.'
 }
 
 export default function ServicoForm({ onSubmit, onCancel, initialData = null, loading = false }) {

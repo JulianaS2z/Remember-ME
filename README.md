@@ -434,4 +434,4 @@ Projeto em fase final de integração e validação, com backend, frontend, aute
 Projeto acadêmico desenvolvido para fins de estudo
 Desenvolvido por Juliana Evangelista
 Orientadores: Prof. Roberto Carlos(backend) e Carlos Anderson(backend e frontend).
-Projeto Acadêmico — 2025
+Projeto Acadêmico — 2026

@@ -2,13 +2,20 @@ import { criarServicoService, listarServicosService, buscarServicoService, atual
 
 export const criarServico = async (req, res) => {
   try {
-    const novoServico = await criarServicoService(req.body);
-    res.status(201).json(novoServico);
+    console.log('BODY RECEBIDO:', req.body)
+
+    const novoServico = await criarServicoService(req.body)
+
+    res.status(201).json(novoServico)
   } catch (error) {
-    console.error('Erro ao criar serviço:', error);
-    res.status(500).json({ error: 'Erro ao criar serviço' });
+    console.error('ERRO COMPLETO:', error)
+
+    res.status(500).json({
+      error: error.message
+    })
   }
-};
+}
+
 
 export const listarServicos = async (req, res) => {
   try {
