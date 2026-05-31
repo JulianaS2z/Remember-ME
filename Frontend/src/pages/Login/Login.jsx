@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { RiMailLine, RiLockLine, RiEyeLine, RiEyeOffLine, RiCameraLensLine } from 'react-icons/ri'
 import { useAuth } from '../../hooks/useAuth.js'
+import loginjpg from '../../assets/login.jpg'
 
 export default function Login() {
   const { login, loading } = useAuth()
@@ -29,18 +30,14 @@ export default function Login() {
       {/* Left — branding */}
       <div className="hidden lg:flex flex-col justify-between p-12 bg-surface-card border-r border-surface-border relative overflow-hidden">
         {/* bg grid decoration */}
-        <div className="absolute inset-0 opacity-5"
-          style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #2563EB 1px, transparent 0)', backgroundSize: '40px 40px' }}
+                <div className="absolute inset-0 opacity-5"
+          style={{ 
+            backgroundImage: `radial-gradient(circle at 1px 1px, #9fcccf 1px, transparent 0), url(${loginjpg})`, 
+            backgroundSize: '40px 40px, cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'repeat, no-repeat'
+          }} 
         />
-        <div className="absolute -top-32 -right-32 w-96 h-96 bg-brand-500/10 rounded-full blur-3xl" />
-        <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-brand-700/10 rounded-full blur-3xl" />
-
-        <div className="relative flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-brand-500 flex items-center justify-center shadow-lg shadow-brand-500/30">
-            <RiCameraLensLine size={20} className="text-white" />
-          </div>
-          <span className="font-display font-bold text-slate-100 text-xl">Remember Me</span>
-        </div>
 
         <div className="relative">
           <p className="text-brand-400 text-sm font-semibold tracking-widest uppercase mb-6">Studio Premium</p>
