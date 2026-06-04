@@ -1,10 +1,7 @@
-import dotenv from 'dotenv';
+import 'dotenv/config'
 import express from 'express';
 import cors from 'cors';
 import { env, validateEnv } from './config/env.js';
-
-dotenv.config({ path: '.env.local' });
-dotenv.config();
 
 import clienteRoutes from './routes/clienteRoutes.js'
 import profissionalRoutes from './routes/profissionalRoutes.js'

@@ -34,10 +34,13 @@ export async function forgotPassword(email) {
 }
 
 export async function authenticate(email, senha) {
+  console.log('[AUTH SERVICE] authenticate start', { email })
   const usuario = await findUserByEmail(email)
+  console.log('[AUTH SERVICE] usuario from db', { exists: !!usuario, id: usuario?.id })
   if (!usuario) return null
 
   const valid = await comparePassword(senha, usuario.senha)
+  console.log('[AUTH SERVICE] comparePassword result', { valid })
   if (!valid) return null
 
   if (usuario.senha && !usuario.senha.startsWith('$2')) {
@@ -46,6 +49,7 @@ export async function authenticate(email, senha) {
   }
 
   const token = signToken({ sub: usuario.id, perfil: usuario.perfil })
+  console.log('[AUTH SERVICE] token generated length', token ? token.length : null)
 
   return {
     token,
@@ -79,12 +83,14 @@ export async function changeUserPassword(id, senhaAtual, novaSenha) {
 }
 
 export async function registerUser(email, nome, senha) {
+  console.log('[AUTH SERVICE] registerUser request', { email, nome })
   const usuarioExistente = await findUserByEmail(email)
   if (usuarioExistente) {
     throw new AppError('Email já cadastrado', 400)
   }
 
   const hashedSenha = await hashPassword(senha)
+  console.log('[AUTH SERVICE] hashedSenha created', { hashedLen: hashedSenha?.length })
 
   const usuario = await createUser({
     nome,
@@ -93,7 +99,10 @@ export async function registerUser(email, nome, senha) {
     perfil: 'cliente',
   })
 
+  console.log('[AUTH SERVICE] new user created', { id: usuario.id, email: usuario.email })
+
   const token = signToken({ sub: usuario.id, perfil: usuario.perfil })
+  console.log('[AUTH SERVICE] token generated length', token ? token.length : null)
 
   return {
     token,

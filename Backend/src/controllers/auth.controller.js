@@ -87,6 +87,7 @@ export async function forgotPasswordController(req, res, next) {
 export async function register(req, res, next) {
   try {
     const { email, senha, nome } = req.body
+    console.log('[AUTH CONTROLLER] register request', { email, nome, from: req.ip })
     const result = await registerUser(email, nome, senha)
 
     return res.status(201).json({

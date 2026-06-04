@@ -6,7 +6,12 @@ export function notFound(req, res) {
 }
 
 export function errorHandler(error, req, res, next) {
-  console.error(error)
+  console.error('===== ERROR HANDLER =====')
+  console.error('Time:', new Date().toISOString())
+  console.error('Route:', req.method, req.originalUrl)
+  console.error('Body:', req.body)
+  console.error(error.stack || error)
+  console.error('===== END ERROR =====')
 
   if (error instanceof AppError) {
     return res.status(error.statusCode).json({ erro: error.message })
