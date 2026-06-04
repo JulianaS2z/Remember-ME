@@ -34,11 +34,20 @@ function mapAgendamento(agendamento) {
   const inicio = agendamento.inicio ? new Date(agendamento.inicio) : null
   const fim = agendamento.fim ? new Date(agendamento.fim) : null
 
+  // Ajusta o status para "Finalizado" na exibição quando a data/hora de fim já passou,
+  // sem alterar o registro no banco. Não altera status quando já estiver Cancelado.
+  const now = new Date()
+  let status = agendamento.status
+  if (fim && fim.getTime() < now.getTime() && status !== 'Cancelado' && status !== 'Finalizado') {
+    status = 'Finalizado'
+  }
+
   return {
     ...agendamento,
     data: inicio ? formatLocalDate(inicio) : null,
     horaInicio: inicio ? formatLocalTime(inicio) : null,
     horaFim: fim ? formatLocalTime(fim) : null,
+    status,
   }
 }
 
@@ -103,13 +112,38 @@ export async function listarAgendamentosService(params = {}) {
   if (params.inicio) where.inicio = { gte: new Date(params.inicio) }
   if (params.fim) where.fim = { lte: new Date(params.fim) }
 
-  const agendamentos = await agendamentoRepo.findAgendamentosWithRelations(where, params.limite)
+  let agendamentos = await agendamentoRepo.findAgendamentosWithRelations(where, params.limite)
+
+  // Persistir como Finalizado todos os agendamentos cujo fim já passou
+  try {
+    const now = new Date()
+    const toFinalize = agendamentos.filter(a => a.fim && a.fim.getTime && a.fim.getTime() < now.getTime() && a.status !== 'Cancelado' && a.status !== 'Finalizado')
+    if (toFinalize.length) {
+      await Promise.all(toFinalize.map((a) => agendamentoRepo.updateAgendamento(a.id, { status: 'Finalizado' })))
+      agendamentos = await agendamentoRepo.findAgendamentosWithRelations(where, params.limite)
+    }
+  } catch (err) {
+    // não falhar a listagem por causa de erro ao atualizar status
+  }
+
   return agendamentos.map(mapAgendamento)
 }
 
 export async function buscarAgendamentoService(id) {
-  const agendamento = await agendamentoRepo.findAgendamentoById(id)
-  return agendamento ? mapAgendamento(agendamento) : null
+  let agendamento = await agendamentoRepo.findAgendamentoById(id)
+  if (!agendamento) return null
+
+  try {
+    const now = new Date()
+    if (agendamento.fim && agendamento.fim.getTime && agendamento.fim.getTime() < now.getTime() && agendamento.status !== 'Cancelado' && agendamento.status !== 'Finalizado') {
+      await agendamentoRepo.updateAgendamento(id, { status: 'Finalizado' })
+      agendamento = await agendamentoRepo.findAgendamentoById(id)
+    }
+  } catch (err) {
+    // ignorar erro de persistência
+  }
+
+  return mapAgendamento(agendamento)
 }
 
 export async function atualizarAgendamentoService(id, data) {
