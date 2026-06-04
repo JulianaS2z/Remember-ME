@@ -16,9 +16,30 @@ validateEnv()
 
 const app = express();
 
-const corsOptions = env.nodeEnv === 'development'
-  ? { origin: true, credentials: true }
-  : { origin: env.frontendUrl, credentials: true }
+// Configurar CORS: em development permitir qualquer origem, em produção permitir
+// as origens listadas em `env.frontendUrl` (aceita múltiplos separados por vírgula)
+// e o domínio de produção hospedado no Vercel.
+const corsOptions = (() => {
+  if (env.nodeEnv === 'development') return { origin: true, credentials: true }
+
+  const configured = String(env.frontendUrl || '')
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean)
+
+  const extra = 'https://remember-me-nine-gamma.vercel.app'
+  if (!configured.includes(extra)) configured.push(extra)
+
+  return {
+    origin(origin, callback) {
+      // permitir solicitações sem origin (ex: servidor-to-servidor)
+      if (!origin) return callback(null, true)
+      if (configured.includes(origin)) return callback(null, true)
+      return callback(new Error('Not allowed by CORS'))
+    },
+    credentials: true,
+  }
+})()
 
 app.use(cors(corsOptions));
 app.use(express.json());
