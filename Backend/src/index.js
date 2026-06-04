@@ -16,9 +16,7 @@ validateEnv()
 
 const app = express();
 
-// Configurar CORS: em development permitir qualquer origem, em produção permitir
-// as origens listadas em `env.frontendUrl` (aceita múltiplos separados por vírgula)
-// e qualquer subdomínio dinâmico gerado pelo deploy da Vercel.
+
 const corsOptions = (() => {
   if (env.nodeEnv === 'development') return { origin: true, credentials: true }
 
@@ -29,12 +27,12 @@ const corsOptions = (() => {
 
   return {
     origin(origin, callback) {
-      // permitir solicitações sem origin (ex: servidor-to-servidor)
+
       if (!origin) return callback(null, true)
       
-      // Verifica se a origem está explicitamente listada ou se pertence ao seu projeto Vercel
-      const isConfigured = configured.includes(origin)
-      const isVercelDeploy = origin.endsWith('-jujubis.vercel.app')
+     
+          const isConfigured = configured.includes(origin)
+      const isVercelDeploy = origin.endsWith('.vercel.app')
 
       if (isConfigured || isVercelDeploy) {
         return callback(null, true)
@@ -47,6 +45,7 @@ const corsOptions = (() => {
 })()
 
 app.use(cors(corsOptions));
+app.options(/.*/, cors(corsOptions));
 app.use(express.json());
 
 app.get('/', function (req, res) {
@@ -59,6 +58,7 @@ app.use('/api/servicos', servicoRoutes);
 app.use('/api/agendamentos', agendamentoRoutes);
 app.use('/api/salas', salaRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/auth', authRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 
 app.use(notFound);
