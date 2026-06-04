@@ -24,11 +24,8 @@ const corsOptions = (() => {
 
   const configured = String(env.frontendUrl || '')
     .split(',')
-    .map(s => s.trim())
+    .map((s) => s.trim())
     .filter(Boolean)
-
-  const extra = 'https://remember-me-nine-gamma.vercel.app'
-  if (!configured.includes(extra)) configured.push(extra)
 
   return {
     origin(origin, callback) {
