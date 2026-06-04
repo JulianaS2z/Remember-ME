@@ -28,33 +28,33 @@ export default function Login() {
   return (
     <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-surface">
       {/* Left — branding */}
-      <div className="hidden lg:flex flex-col justify-between p-12 bg-surface-card border-r border-surface-border relative overflow-hidden">
+      <div className="hidden lg:flex flex-col justify-between p-12 bg-slate-950 border-r border-slate-800 relative overflow-hidden">
         {/* bg grid decoration */}
-                <div className="absolute inset-0 opacity-5"
+                <div className="absolute inset-0"
           style={{ 
-            backgroundImage: `radial-gradient(circle at 1px 1px, #9fcccf 1px, transparent 0), url(${loginjpg})`, 
-            backgroundSize: '40px 40px, cover',
+            backgroundImage: `linear-gradient(90deg, rgba(15,23,42,.92), rgba(15,23,42,.68)), url(${loginjpg})`, 
+            backgroundSize: 'cover',
             backgroundPosition: 'center',
-            backgroundRepeat: 'repeat, no-repeat'
+            backgroundRepeat: 'no-repeat'
           }} 
         />
 
         <div className="relative">
           <p className="text-brand-400 text-sm font-semibold tracking-widest uppercase mb-6">Studio Premium</p>
-          <h1 className="font-display font-bold text-5xl text-slate-100 leading-tight mb-6">
+          <h1 className="font-display font-bold text-5xl text-white leading-tight mb-6">
             Transformando<br />momentos em<br />
             <span className="text-brand-400">memórias eternas.</span>
           </h1>
-          <p className="text-surface-subtle text-lg leading-relaxed max-w-md">
+          <p className="text-white/80 text-lg leading-relaxed max-w-md">
             Sistema completo de gestão para estúdios fotográficos — clientes, agendamentos, profissionais e muito mais.
           </p>
         </div>
 
         <div className="relative flex items-center gap-6">
           {[['247', 'Clientes'], ['1.2k', 'Ensaios'], ['4.9★', 'Avaliação']].map(([val, label]) => (
-            <div key={label}>
-              <p className="font-display font-bold text-2xl text-slate-100">{val}</p>
-              <p className="text-surface-subtle text-sm">{label}</p>
+            <div key={label} className="rounded-2xl border border-white/10 bg-white/10 px-5 py-4 backdrop-blur">
+              <p className="font-display font-bold text-2xl text-white">{val}</p>
+              <p className="text-white/70 text-sm">{label}</p>
             </div>
           ))}
         </div>
@@ -62,7 +62,7 @@ export default function Login() {
 
       {/* Right — form */}
       <div className="flex items-center justify-center p-6 lg:p-12">
-        <div className="w-full max-w-md animate-slide-in">
+        <div className="w-full max-w-md animate-slide-in bg-white border border-surface-border rounded-2xl shadow-xl shadow-slate-200/70 p-8">
           {/* Mobile logo */}
           <div className="lg:hidden flex items-center gap-3 mb-10">
             <div className="w-9 h-9 rounded-xl bg-brand-500 flex items-center justify-center">
@@ -127,7 +127,7 @@ export default function Login() {
                 <input type="checkbox" className="w-4 h-4 rounded bg-surface border-surface-border accent-brand-500" />
                 <span className="text-sm text-surface-subtle">Lembrar-me</span>
               </label>
-              <Link to="/forgot-password" className="text-sm text-brand-400 hover:text-brand-300 transition-colors">
+              <Link to="/forgot-password" className="text-sm text-brand-600 hover:text-brand-700 transition-colors">
                 Esqueci minha senha
               </Link>
             </div>
@@ -148,11 +148,11 @@ export default function Login() {
 
           <p className="mt-8 text-center text-sm text-surface-subtle">
             Não tem acesso?{' '}
-            <Link to="/request-access" className="text-brand-400 font-medium hover:text-brand-300 transition-colors">
+            <Link to="/request-access" className="text-brand-600 font-medium hover:text-brand-700 transition-colors">
               Solicite ao administrador
             </Link>
             {' '}ou{' '}
-            <Link to="/register" className="text-brand-400 font-medium hover:text-brand-300 transition-colors">
+            <Link to="/register" className="text-brand-600 font-medium hover:text-brand-700 transition-colors">
               crie sua conta
             </Link>
           </p>

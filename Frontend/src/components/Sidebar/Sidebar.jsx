@@ -25,16 +25,16 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 bg-surface-card border-r border-surface-border flex flex-col z-40">
+    <aside className="fixed left-0 top-0 h-screen w-64 bg-slate-950 border-r border-slate-800 flex flex-col z-40 shadow-2xl shadow-slate-950/20">
       {/* Logo */}
-      <div className="px-6 py-6 border-b border-surface-border">
+      <div className="px-6 py-6 border-b border-slate-800">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-brand-500 flex items-center justify-center shadow-lg shadow-brand-500/30">
+          <div className="w-10 h-10 rounded-2xl bg-brand-500 flex items-center justify-center shadow-lg shadow-brand-500/30">
             <RiCameraLensLine size={18} className="text-white" />
           </div>
           <div>
-            <span className="font-display font-bold text-slate-100 text-lg leading-none block">Remember Me</span>
-            <span className="text-surface-subtle text-xs">Studio Premium</span>
+            <span className="font-display font-bold text-white text-lg leading-none block">Remember Me</span>
+            <span className="text-slate-400 text-xs">Studio Premium</span>
           </div>
         </div>
       </div>
@@ -49,14 +49,14 @@ export default function Sidebar() {
             className={({ isActive }) =>
               `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group
               ${isActive
-                ? 'bg-brand-500/10 text-brand-400 border border-brand-500/20'
-                : 'text-surface-subtle hover:text-slate-200 hover:bg-surface-hover'
+                ? 'bg-white text-slate-950 shadow-sm'
+                : 'text-slate-400 hover:text-white hover:bg-white/10'
               }`
             }
           >
             {({ isActive }) => (
               <>
-                <Icon size={18} className={isActive ? 'text-brand-400' : 'text-surface-muted group-hover:text-slate-300'} />
+                <Icon size={18} className={isActive ? 'text-brand-500' : 'text-slate-500 group-hover:text-white'} />
                 {label}
               </>
             )}
@@ -65,14 +65,14 @@ export default function Sidebar() {
       </nav>
 
       {/* User + Logout */}
-      <div className="px-3 py-4 border-t border-surface-border space-y-1">
+      <div className="px-3 py-4 border-t border-slate-800 space-y-1">
         <NavLink
           to="/perfil"
           className={({ isActive }) =>
             `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group
             ${isActive
-              ? 'bg-brand-500/10 text-brand-400 border border-brand-500/20'
-              : 'text-surface-subtle hover:text-slate-200 hover:bg-surface-hover'
+              ? 'bg-white text-slate-950 shadow-sm'
+              : 'text-slate-400 hover:text-white hover:bg-white/10'
             }`
           }
         >
@@ -82,20 +82,20 @@ export default function Sidebar() {
 
         <button
           onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-surface-subtle hover:text-red-400 hover:bg-red-500/10 transition-all duration-200"
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400 hover:text-red-300 hover:bg-red-500/10 transition-all duration-200"
         >
           <RiLogoutBoxLine size={18} />
           Sair
         </button>
 
         {/* User pill */}
-        <div className="flex items-center gap-3 px-4 py-3 mt-2 bg-surface rounded-xl border border-surface-border">
-          <div className="w-8 h-8 rounded-lg bg-brand-500/20 flex items-center justify-center text-brand-400 font-bold text-sm flex-shrink-0">
+        <div className="flex items-center gap-3 px-4 py-3 mt-2 bg-white/5 rounded-xl border border-white/10">
+          <div className="w-8 h-8 rounded-lg bg-brand-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
             {user?.nome?.charAt(0)?.toUpperCase() || 'U'}
           </div>
           <div className="min-w-0">
-            <p className="text-slate-200 text-sm font-medium truncate">{user?.nome || 'Usuário'}</p>
-            <p className="text-surface-subtle text-xs truncate">{user?.email || ''}</p>
+            <p className="text-white text-sm font-medium truncate">{user?.nome || 'Usuário'}</p>
+            <p className="text-slate-400 text-xs truncate">{user?.email || ''}</p>
           </div>
         </div>
       </div>

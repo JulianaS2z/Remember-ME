@@ -21,10 +21,19 @@ function apiError(err) {
   return err.response?.data?.erro || err.response?.data?.message || 'Erro ao salvar agendamento.'
 }
 
+function todayDateOnly() {
+  const today = new Date()
+  const year = today.getFullYear()
+  const month = String(today.getMonth() + 1).padStart(2, '0')
+  const day = String(today.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
 export default function AgendamentoForm({ onSubmit, onCancel, initialData = null, loading = false }) {
   const [form, setForm] = useState(EMPTY)
   const [error, setError] = useState('')
   const [options, setOptions] = useState({ clientes: [], profissionais: [], salas: [], servicos: [] })
+  const minDate = todayDateOnly()
 
   useEffect(() => {
     Promise.all([
@@ -125,7 +134,7 @@ export default function AgendamentoForm({ onSubmit, onCancel, initialData = null
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div>
           <label className="block text-sm font-medium text-slate-300 mb-1.5">Data *</label>
-          <input type="date" name="data" value={form.data} onChange={handle} required className="rm-input" />
+          <input type="date" name="data" value={form.data} onChange={handle} min={minDate} required className="rm-input" />
         </div>
         <div>
           <label className="block text-sm font-medium text-slate-300 mb-1.5">Início *</label>

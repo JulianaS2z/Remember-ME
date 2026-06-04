@@ -4,8 +4,13 @@ import clienteService from '../../services/clienteService.js'
 import Modal from '../../components/Modal/Modal.jsx'
 import ClienteForm from '../../components/ClienteForm/ClienteForm.jsx'
 import Loading from '../../components/Loading/Loading.jsx'
-import { format } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
+
+function formatBirthDate(value) {
+  if (!value) return '—'
+  const [year, month, day] = value.slice(0, 10).split('-')
+  if (!year || !month || !day) return value
+  return `${day}/${month}/${year}`
+}
 
 export default function Clientes() {
   const [clientes, setClientes] = useState([])
@@ -132,8 +137,8 @@ export default function Clientes() {
                   <tr key={c.id} className="hover:bg-surface/50 transition-colors">
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-brand-500/20 text-brand-400 font-bold text-sm flex items-center justify-center flex-shrink-0">
-                          {c.nome?.charAt(0)?.toUpperCase()}
+                        <div className="w-9 h-9 rounded-xl bg-brand-500 text-white font-bold text-sm flex items-center justify-center flex-shrink-0 shadow-sm shadow-brand-500/20">
+                          {c.nome?.trim().charAt(0)?.toUpperCase() || '?'}
                         </div>
                         <span className="font-medium text-slate-200">{c.nome}</span>
                       </div>
@@ -143,7 +148,7 @@ export default function Clientes() {
                       <p className="text-surface-subtle text-xs">{c.telefone || '—'}</p>
                     </td>
                     <td className="px-5 py-4 text-surface-subtle text-sm">
-                      {c.dataNascimento ? format(new Date(c.dataNascimento), 'dd/MM/yyyy', { locale: ptBR }) : '—'}
+                      {formatBirthDate(c.dataNascimento)}
                     </td>
                     <td className="px-5 py-4">
                       <button

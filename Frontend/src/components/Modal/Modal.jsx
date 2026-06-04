@@ -32,10 +32,10 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md' })
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       {/* backdrop */}
-      <div className="absolute inset-0 bg-surface/80 backdrop-blur-sm animate-fade-in" />
+      <div className="absolute inset-0 bg-slate-950/40 backdrop-blur-sm animate-fade-in" />
 
       {/* panel */}
-      <div className={`relative w-full ${sizes[size]} bg-surface-card border border-surface-border rounded-2xl shadow-2xl animate-scale-in`}>
+      <div className={`relative w-full ${sizes[size]} bg-surface-card border border-surface-border rounded-2xl shadow-2xl shadow-slate-950/15 animate-scale-in`}>
         {/* header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-surface-border">
           <h2 className="text-lg font-semibold text-slate-100 font-display">{title}</h2>

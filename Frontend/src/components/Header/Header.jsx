@@ -8,7 +8,7 @@ export default function Header({ title }) {
   const today = format(new Date(), "EEEE, d 'de' MMMM", { locale: ptBR })
 
   return (
-    <header className="h-16 bg-surface-card/50 backdrop-blur border-b border-surface-border flex items-center px-6 gap-4">
+    <header className="h-16 bg-white/85 backdrop-blur border-b border-surface-border flex items-center px-6 gap-4 shadow-sm shadow-slate-200/60">
       {/* Title */}
       <div className="flex-1">
         <h1 className="font-display font-semibold text-slate-100 text-lg leading-none">{title}</h1>
@@ -26,7 +26,7 @@ export default function Header({ title }) {
           <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-brand-500 rounded-full ring-2 ring-surface-card" />
         </button> */}
 
-        <div className="w-8 h-8 rounded-xl bg-brand-500/20 flex items-center justify-center text-brand-400 font-bold text-sm ml-1">
+        <div className="w-8 h-8 rounded-xl bg-brand-500 flex items-center justify-center text-white font-bold text-sm ml-1 shadow-sm shadow-brand-500/20">
           {user?.nome?.charAt(0)?.toUpperCase() || 'U'}
         </div>
       {/* </div> */}
