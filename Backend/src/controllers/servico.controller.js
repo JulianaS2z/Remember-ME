@@ -49,13 +49,12 @@ export const atualizarServico = async (req, res) => {
   }
 };
 
-export const deletarServico = async (req, res) => {
+export const deletarServico = async (req, res, next) => {
   try {
     const { id } = req.params;
     await deletarServicoService(id);
     res.json({ message: 'Serviço deletado com sucesso' });
   } catch (error) {
-    console.error('Erro ao deletar serviço:', error);
-    res.status(500).json({ error: 'Erro ao deletar serviço' });
+    next(error);
   }
 };

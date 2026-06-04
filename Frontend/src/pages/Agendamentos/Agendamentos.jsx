@@ -28,6 +28,7 @@ export default function Agendamentos() {
   const [modalOpen, setModalOpen] = useState(false)
   const [editing, setEditing] = useState(null)
   const [confirmDelete, setConfirmDelete] = useState(null)
+  const [deleteError, setDeleteError] = useState('')
   const [filterStatus, setFilterStatus] = useState('Todos')
 
   const fetch = useCallback(async () => {
@@ -53,8 +54,26 @@ export default function Agendamentos() {
     } finally { setSaving(false) }
   }
 
+  const askDelete = (agendamento) => {
+    setDeleteError('')
+    setConfirmDelete(agendamento)
+  }
+
+  const closeDeleteModal = () => {
+    setDeleteError('')
+    setConfirmDelete(null)
+  }
+
   const handleDelete = async () => {
-    try { await agendamentoService.excluir(confirmDelete.id); setConfirmDelete(null); fetch() } catch {}
+    if (!confirmDelete) return
+    setDeleteError('')
+    try {
+      await agendamentoService.excluir(confirmDelete.id)
+      closeDeleteModal()
+      fetch()
+    } catch (err) {
+      setDeleteError(err.response?.data?.erro || err.response?.data?.message || 'Não foi possível excluir o agendamento.')
+    }
   }
 
   const handleStatus = async (a, status) => {
@@ -259,7 +278,7 @@ export default function Agendamentos() {
                       <span className={`rm-badge status-${(a.status || '').toLowerCase()} flex-shrink-0`}>{a.status}</span>
                       <div className="flex gap-1 flex-shrink-0">
                         <button onClick={() => openEdit(a)} className="p-1.5 text-surface-subtle hover:text-brand-400 hover:bg-brand-500/10 rounded-lg transition-colors"><RiEditLine size={14} /></button>
-                        <button onClick={() => setConfirmDelete(a)} className="p-1.5 text-surface-subtle hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"><RiDeleteBinLine size={14} /></button>
+                        <button onClick={() => askDelete(a)} className="p-1.5 text-surface-subtle hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"><RiDeleteBinLine size={14} /></button>
                       </div>
                     </div>
                   )
@@ -274,11 +293,12 @@ export default function Agendamentos() {
         <AgendamentoForm onSubmit={handleSubmit} onCancel={closeModal} initialData={editing} loading={saving} />
       </Modal>
 
-      <Modal isOpen={!!confirmDelete} onClose={() => setConfirmDelete(null)} title="Confirmar Exclusão" size="sm">
+      <Modal isOpen={!!confirmDelete} onClose={closeDeleteModal} title="Confirmar Exclusão" size="sm">
         <p className="text-surface-subtle mb-6">Deseja excluir o agendamento de <span className="text-slate-200 font-semibold">{confirmDelete?.cliente?.nome || confirmDelete?.cliente}</span>?</p>
+        {deleteError && <div className="p-3 mb-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">{deleteError}</div>}
         <div className="flex gap-3">
           <button onClick={handleDelete} className="flex-1 py-2.5 bg-red-500 hover:bg-red-600 text-white font-medium rounded-xl transition-colors">Excluir</button>
-          <button onClick={() => setConfirmDelete(null)} className="flex-1 rm-btn-secondary justify-center">Cancelar</button>
+          <button onClick={closeDeleteModal} className="flex-1 rm-btn-secondary justify-center">Cancelar</button>
         </div>
       </Modal>
     </div>

@@ -39,12 +39,12 @@ export const atualizarSala = async (req, res) => {
     }
 };
 
-export const deletarSala = async (req, res) => {
+export const deletarSala = async (req, res, next) => {
     try {
         const { id } = req.params;
         const sala = await deletarSalaService(id);
         res.json(sala);
     } catch (error) {
-        res.status(500).json({ erro: 'Erro ao deletar sala' });
+        next(error);
     }
 };

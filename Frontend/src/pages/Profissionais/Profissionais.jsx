@@ -13,6 +13,7 @@ export default function Profissionais() {
   const [modalOpen, setModalOpen] = useState(false)
   const [editing, setEditing] = useState(null)
   const [confirmDelete, setConfirmDelete] = useState(null)
+  const [deleteError, setDeleteError] = useState('')
 
   const fetch = useCallback(async () => {
     setLoading(true)
@@ -38,8 +39,26 @@ export default function Profissionais() {
     } finally { setSaving(false) }
   }
 
+  const askDelete = (profissional) => {
+    setDeleteError('')
+    setConfirmDelete(profissional)
+  }
+
+  const closeDeleteModal = () => {
+    setDeleteError('')
+    setConfirmDelete(null)
+  }
+
   const handleDelete = async () => {
-    try { await profissionalService.excluir(confirmDelete.id); setConfirmDelete(null); fetch() } catch {}
+    if (!confirmDelete) return
+    setDeleteError('')
+    try {
+      await profissionalService.excluir(confirmDelete.id)
+      closeDeleteModal()
+      fetch()
+    } catch (err) {
+      setDeleteError(err.response?.data?.erro || err.response?.data?.message || 'Não foi possível excluir o profissional.')
+    }
   }
 
   const toggleStatus = async (p) => {
@@ -97,7 +116,7 @@ export default function Profissionais() {
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-1">
                         <button onClick={() => openEdit(p)} className="p-2 text-surface-subtle hover:text-brand-400 hover:bg-brand-500/10 rounded-lg transition-colors"><RiEditLine size={16} /></button>
-                        <button onClick={() => setConfirmDelete(p)} className="p-2 text-surface-subtle hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"><RiDeleteBinLine size={16} /></button>
+                        <button onClick={() => askDelete(p)} className="p-2 text-surface-subtle hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"><RiDeleteBinLine size={16} /></button>
                       </div>
                     </td>
                   </tr>
@@ -112,11 +131,12 @@ export default function Profissionais() {
         <ProfissionalForm onSubmit={handleSubmit} onCancel={closeModal} initialData={editing} loading={saving} />
       </Modal>
 
-      <Modal isOpen={!!confirmDelete} onClose={() => setConfirmDelete(null)} title="Confirmar Exclusão" size="sm">
+      <Modal isOpen={!!confirmDelete} onClose={closeDeleteModal} title="Confirmar Exclusão" size="sm">
         <p className="text-surface-subtle mb-6">Deseja excluir <span className="text-slate-200 font-semibold">{confirmDelete?.nome}</span>?</p>
+        {deleteError && <div className="p-3 mb-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">{deleteError}</div>}
         <div className="flex gap-3">
           <button onClick={handleDelete} className="flex-1 py-2.5 bg-red-500 hover:bg-red-600 text-white font-medium rounded-xl transition-colors">Excluir</button>
-          <button onClick={() => setConfirmDelete(null)} className="flex-1 rm-btn-secondary justify-center">Cancelar</button>
+          <button onClick={closeDeleteModal} className="flex-1 rm-btn-secondary justify-center">Cancelar</button>
         </div>
       </Modal>
     </div>
