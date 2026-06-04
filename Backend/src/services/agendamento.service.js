@@ -60,6 +60,10 @@ async function validateRelations(data) {
   ])
 
   if (!cliente) throw new AppError('Cliente não encontrado', 404)
+  // Impedir clientes inativos de criar/receber agendamentos
+  if (cliente.status && String(cliente.status).toLowerCase() === 'inativo') {
+    throw new AppError('Cliente inativo não pode agendar', 400)
+  }
   if (!profissional) throw new AppError('Profissional não encontrado', 404)
   if (!profissional.ativo) throw new AppError('Profissional inativo não pode receber agendamentos', 400)
   if (!sala) throw new AppError('Sala não encontrada', 404)
@@ -90,7 +94,13 @@ export async function criarAgendamentoService(data) {
   const { servico } = await validateRelations(data)
   const inicio = buildInicio(data)
   const fim = new Date(inicio.getTime() + servico.duracaoMin * 60000)
-
+  // Não permitir criar um agendamento já marcado como Finalizado quando ainda não terminou
+  if (data.status === 'Finalizado') {
+    const now = new Date()
+    if (fim.getTime() >= now.getTime()) {
+      throw new AppError('Não é possível marcar agendamento como Finalizado antes do término', 400)
+    }
+  }
   await ensureNoConflict(data, inicio, fim)
 
   const agendamento = await agendamentoRepo.createAgendamento({
@@ -156,6 +166,14 @@ export async function atualizarAgendamentoService(id, data) {
 
   await ensureNoConflict(data, inicio, fim, id)
 
+  // Não permitir marcar como Finalizado se o fim ainda não passou
+  if (data.status === 'Finalizado') {
+    const now = new Date()
+    if (fim.getTime() >= now.getTime()) {
+      throw new AppError('Não é possível marcar agendamento como Finalizado antes do término', 400)
+    }
+  }
+
   await agendamentoRepo.updateAgendamento(id, {
     clienteId: data.clienteId,
     profissionalId: data.profissionalId,
@@ -176,6 +194,16 @@ export async function deletarAgendamentoService(id) {
 export async function alterarStatusAgendamentoService(id, status) {
   if (!['Pendente', 'Confirmado', 'Cancelado', 'Finalizado'].includes(status)) {
     throw new AppError('Status inválido', 400)
+  }
+
+  const atual = await agendamentoRepo.findAgendamentoById(id)
+  if (!atual) throw new AppError('Agendamento não encontrado', 404)
+
+  if (status === 'Finalizado') {
+    const now = new Date()
+    if (!atual.fim || (atual.fim.getTime && atual.fim.getTime() >= now.getTime())) {
+      throw new AppError('Não é possível marcar agendamento como Finalizado antes do término', 400)
+    }
   }
 
   const agendamento = await agendamentoRepo.updateAgendamento(id, { status })

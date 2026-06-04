@@ -43,7 +43,7 @@ export default function AgendamentoForm({ onSubmit, onCancel, initialData = null
       servicoService.listar().catch(() => []),
     ]).then(([clientes, profissionais, salas, servicos]) => {
       setOptions({
-        clientes: Array.isArray(clientes) ? clientes : clientes?.data || [],
+        clientes: (Array.isArray(clientes) ? clientes : clientes?.data || []).filter((c) => (c.status || '').toLowerCase() !== 'inativo'),
         profissionais: (Array.isArray(profissionais) ? profissionais : profissionais?.data || []).filter((p) => p.ativo !== false),
         salas: Array.isArray(salas) ? salas : salas?.data || [],
         servicos: Array.isArray(servicos) ? servicos : servicos?.data || [],
