@@ -8,6 +8,20 @@ O Remember Me foi criado para resolver a organização da agenda de um estúdio 
 
 Este projeto foi desenvolvido para apresentação acadêmica e portfólio profissional, usando uma arquitetura full stack com API REST, banco relacional e interface React.
 
+## Como funciona
+
+O Remember Me funciona como um sistema completo de gestão de agenda:
+
+- Usuários fazem login no frontend React e recebem um token JWT.
+- O frontend envia requisições à API Express em `/api`, usando o token no header `Authorization`.
+- A API valida o token e processa os dados usando Prisma para acessar o banco PostgreSQL.
+- Cada agendamento reúne cliente, profissional, sala, serviço, data, hora de início e status.
+- O horário de fim do agendamento é calculado automaticamente pela duração do serviço.
+- Antes de criar ou editar um agendamento, o sistema valida se já existe conflito de horário:
+  - o mesmo profissional não pode ter dois agendamentos ativos no mesmo horário
+  - a mesma sala não pode estar em dois agendamentos ativos no mesmo horário
+- Agendamentos com status `Cancelado` não bloqueiam novos horários.
+
 ## Funcionalidades
 
 - Login com autenticação JWT
