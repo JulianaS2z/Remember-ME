@@ -22,22 +22,21 @@ const corsOptions = (() => {
 
   const configured = String(env.frontendUrl || '')
     .split(',')
-    .map((s) => s.trim())
+    .map((s) => s.trim().toLowerCase())
     .filter(Boolean)
 
   return {
     origin(origin, callback) {
-
       if (!origin) return callback(null, true)
-      
-     
-          const isConfigured = configured.includes(origin)
-      const isVercelDeploy = origin.endsWith('.vercel.app')
+
+      const originLower = origin.toLowerCase()
+      const isConfigured = configured.includes(originLower)
+      const isVercelDeploy = originLower.endsWith('.vercel.app')
 
       if (isConfigured || isVercelDeploy) {
         return callback(null, true)
       }
-      
+
       return callback(new Error('Not allowed by CORS'))
     },
     credentials: true,
